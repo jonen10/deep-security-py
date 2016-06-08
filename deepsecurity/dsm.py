@@ -18,7 +18,8 @@ class Manager(core.CoreApi):
       tenant=None,
       username=None,
       password=None,
-      ignore_ssl_validation=False
+      ignore_ssl_validation=False,
+      prefix=None
       ):
     core.CoreApi.__init__(self)
     self._hostname = None
@@ -26,6 +27,7 @@ class Manager(core.CoreApi):
     self._tenant = tenant
     self._username = username
     self._password = password
+    self.prefix = prefix
     self.ignore_ssl_validation = ignore_ssl_validation
     self.hostname = hostname
 
@@ -102,8 +104,8 @@ class Manager(core.CoreApi):
     """
     Set the API endpoints based on the current configuration
     """
-    self._rest_api_endpoint = "https://{}:{}/rest".format(self.hostname, self.port)
-    self._soap_api_endpoint = "https://{}:{}/webservice/Manager".format(self.hostname, self.port)
+    self._rest_api_endpoint = "https://{}:{}/{}rest".format(self.hostname, self.port, self.prefix if self.prefix else "")
+    self._soap_api_endpoint = "https://{}:{}/{}webservice/Manager".format(self.hostname, self.port, self.prefix if self.prefix else "")
 
   def _reset_session(self):
     """
