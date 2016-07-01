@@ -50,7 +50,8 @@ class Manager(core.CoreApi):
     """
     Return a better string representation
     """
-    return "Manager <{}:{}>".format(self.hostname, self.port)
+    dsm_port = ":{}".format(self.port) if self.port else ""
+    return "Manager <{}{}>".format(self.hostname, dsm_port)
 
   # *******************************************************************
   # properties
@@ -70,7 +71,7 @@ class Manager(core.CoreApi):
 
   @port.setter
   def port(self, value):
-    self._port = int(value)
+    self._port = int(value) if value else None
     self._set_endpoints()
 
   @property
@@ -104,8 +105,14 @@ class Manager(core.CoreApi):
     """
     Set the API endpoints based on the current configuration
     """
+<<<<<<< HEAD
     self._rest_api_endpoint = "https://{}:{}/{}rest".format(self.hostname, self.port, self.prefix if self.prefix else "")
     self._soap_api_endpoint = "https://{}:{}/{}webservice/Manager".format(self.hostname, self.port, self.prefix if self.prefix else "")
+=======
+    dsm_port = ":{}".format(self.port) if self.port else "" # allow for endpoints with no port specified
+    self._rest_api_endpoint = "https://{}{}/rest".format(self.hostname, dsm_port)
+    self._soap_api_endpoint = "https://{}{}/webservice/Manager".format(self.hostname, dsm_port)
+>>>>>>> master
 
   def _reset_session(self):
     """
